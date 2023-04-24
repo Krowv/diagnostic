@@ -2,7 +2,7 @@
 $title = "Axes numériques";
 include ("component/header.php");
 ?>
-    <p>test</p>
+<h1><?= $title ?></h1>
 <?php
 include("component/footer.php");
 
