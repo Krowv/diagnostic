@@ -13,7 +13,7 @@ $questions_numerique_array = $questions->getQuestionsForNumerique();
 $answer = new Answers;
 $category = new Category();
 if(isset($_POST['send_form'])){
-    $grid = new Grid
+    $grid = new Grid;
 }
 var_dump($_POST);
 ?>
