@@ -50,3 +50,7 @@
 .dblock{
     display: block;
 }
+
+.competence_side, .reactivite_side{
+    width: 90%;
+}

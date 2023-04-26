@@ -6,6 +6,7 @@ class Questions extends Databaseconnexion
     private string $content;
     private string $created_at;
     private string $updated_at;
+    private int $id_category;
     public PDO $db;
 
     public function __construct()
@@ -46,6 +47,14 @@ class Questions extends Databaseconnexion
     }
 
     /**
+     * @return int
+     */
+    public function getIdCategory(): int
+    {
+        return $this->id_category;
+    }
+
+    /**
      * @param string $content
      */
     public function setContent(string $content): void
@@ -77,6 +86,14 @@ class Questions extends Databaseconnexion
         $this->updated_at = $updated_at;
     }
 
+    /**
+     * @param int $id_category
+     */
+    public function setIdCategory(int $id_category): void
+    {
+        $this->id_category = $id_category;
+    }
+
     public function getQuestions(){
         $questions = $this->db->prepare("SELECT * FROM questions");
         $questions->execute();
@@ -84,20 +101,54 @@ class Questions extends Databaseconnexion
     }
 
     public function getQuestionsForCompetences(){
-        $questions = $this->db->prepare("SELECT * FROM questions WHERE id_category = 1");
+        $questions = $this->db->prepare("SELECT distinct q.*
+                                                FROM questions q
+                                                INNER JOIN category c
+                                                ON c.id = q.id_category
+                                                INNER JOIN axis a 
+                                                ON a.id = c.id_axis
+                                                WHERE c.id_axis = 1");
         $questions->execute();
         return $questions->fetchAll();
     }
 
     public function getQuestionsForReactivite(){
-        $questions = $this->db->prepare("SELECT * FROM questions WHERE id_category = 2");
+        $questions = $this->db->prepare("SELECT distinct q.*
+                                                FROM questions q
+                                                INNER JOIN category c
+                                                ON c.id = q.id_category
+                                                INNER JOIN axis a 
+                                                ON a.id = c.id_axis
+                                                WHERE c.id_axis = 2");
         $questions->execute();
         return $questions->fetchAll();
     }
 
     public function getQuestionsForNumerique(){
-        $questions = $this->db->prepare("SELECT * FROM questions WHERE id_category = 3");
+        $questions = $this->db->prepare("SELECT distinct q.*
+                                                FROM questions q
+                                                INNER JOIN category c
+                                                ON c.id = q.id_category
+                                                INNER JOIN axis a 
+                                                ON a.id = c.id_axis
+                                                WHERE c.id_axis = 3");
         $questions->execute();
         return $questions->fetchAll();
+    }
+
+    public function countQuestionsByCategory(){
+        $query = $this->db->prepare("SELECT * FROM questions where id_category = ?");
+        $query->bindValue(1, $this->id_category);
+        $query->execute();
+        $query = $query->fetchAll();
+        return count($query);
+    }
+
+    public function selectCategoryFromQuestion(){
+        $query = $this->db->prepare("SELECT category_name FROM category WHERE id = ?");
+        $query->bindValue(1, $this->id_category);
+        $query->execute();
+        $category_name = $query->fetch();
+        return $category_name['category_name'];
     }
 }

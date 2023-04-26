@@ -4,8 +4,18 @@ include("component/header.php");
 include ("entity/DatabaseConnexion.php");
 include ("entity/Questions.php");
 include ("entity/Answers.php");
+include ("entity/Category.php");
+require ("entity/Grid.php");
 $questions = new Questions;
+$questions_competences_array = $questions->getQuestionsForCompetences();
+$questions_reactivity_array = $questions->getQuestionsForReactivite();
+$questions_numerique_array = $questions->getQuestionsForNumerique();
 $answer = new Answers;
+$category = new Category();
+if(isset($_POST['send_form'])){
+    $grid = new Grid
+}
+var_dump($_POST);
 ?>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -53,44 +63,115 @@ $answer = new Answers;
         </section>
         <section style="display: flex; flex-direction: row; justify-content: center">
             <form action="" method="POST">
-                <div class="competence_side dnone" id="skills">
-                    <h2>Compétences</h2>
-                    <?php
-                    foreach ($questions->getQuestionsForCompetences() as $questionCompetence) {
-                        ?>
-                    <h4><?= $questionCompetence['question_content'] ?></h4>
-                    <?php
-                        $answer->setIdQuestion($questionCompetence['id']);
-                        foreach ($answer->getAnswerForQuestions() as $item) {
-                            ?>
-                            <label for="label<?= $item['id']?>"><?= $item['content_answer']?></label>
-                            <input type="radio" name="question<?= $questionCompetence['id']?>" id="">
-                            <br>
-                    <?php
-                        }
-                    }
-                    ?>
-                </div>
-                <div class="competence_side dnone" id="reactivity">
-                    <h2>Reactivité</h2>
-                    <?php
-                    foreach ($questions->getQuestionsForReactivite() as $questionReactivite) {
-                        ?>
-                    <h4><?= $questionReactivite['question_content']?></h4>
-                    <?php
-                    }
-                    ?>
-                </div>
-                <div class="competence_side dnone" id="numeric">
-                    <h2>Numérique</h2>
-                    <?php
-                    foreach ($questions->getQuestionsForNumerique() as $questionNumerio) {
-                        ?>
-                        <h4><?= $questionNumerio['question_content']?></h4>
+                <div class="competence_side dnone mx-auto" id="skills" style="width: 90%">
+                    <h2 class="text-center mt-4">Compétences</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Question</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php
-                    }
-                    ?>
+                        foreach ($questions->getQuestionsForCompetences() as $questionsForCompetence) {
+                            $questions->setIdCategory($questionsForCompetence['id_category']);
+                            ?>
+                            <td><?= $questions->selectCategoryFromQuestion()?></td>
+                            <td><?= $questionsForCompetence['question_content']?></td>
+                            <td>
+                                <?php
+                                $answer->setIdQuestion($questionsForCompetence['id']);
+                                foreach ($answer->getAnswerForQuestions() as $answerForQuestion) {
+                                 ?>
+                                <label for="label<?= $answerForQuestion['id']?>"><?= $answerForQuestion['content_answer']?></label>
+                                <input type="radio" name="question<?= $questionsForCompetence['id']?>" id="" value="<?= $answerForQuestion['note']?>">
+                                <br>
+                                <?php
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
                 </div>
+                <div class="reactivite_side dnone mx-auto" id="reactivity">
+                    <h2 class="text-center mt-4">Réactivité</h2>
+                    <table class="table table-striped mx-auto">
+                        <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Question</th>
+                            <th>Note</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($questions->getQuestionsForReactivite() as $questionsForCompetence) {
+                            $questions->setIdCategory($questionsForCompetence['id_category']);
+                            ?>
+                            <td><?= $questions->selectCategoryFromQuestion()?></td>
+                            <td><?= $questionsForCompetence['question_content']?></td>
+                            <td>
+                                <?php
+                                $answer->setIdQuestion($questionsForCompetence['id']);
+                                foreach ($answer->getAnswerForQuestions() as $answerForQuestion) {
+                                    ?>
+                                    <label for="label<?= $answerForQuestion['id']?>"><?= $answerForQuestion['content_answer']?></label>
+                                    <input type="radio" name="question<?= $questionsForCompetence['id']?>" id="" value="<?= $answerForQuestion['note']?>">
+                                    <br>
+                                    <?php
+                                }
+                                ?>
+                            </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="reactivite_side dnone mx-auto" id="numeric">
+                    <h2 class="text-center mt-4">Numérique</h2>
+                    <table class="table table-striped mx-auto">
+                        <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Question</th>
+                            <th>Note</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($questions->getQuestionsForNumerique() as $questionsForCompetence) {
+                            $questions->setIdCategory($questionsForCompetence['id_category']);
+                            ?>
+                            <td><?= $questions->selectCategoryFromQuestion()?></td>
+                            <td><?= $questionsForCompetence['question_content']?></td>
+                            <td>
+                                <?php
+                                $answer->setIdQuestion($questionsForCompetence['id']);
+                                foreach ($answer->getAnswerForQuestions() as $answerForQuestion) {
+                                    ?>
+                                    <label for="label<?= $answerForQuestion['id']?>"><?= $answerForQuestion['content_answer']?></label>
+                                    <input type="radio" name="question<?= $questionsForCompetence['id']?>" id="" value="<?= $answerForQuestion['note']?>">
+                                    <br>
+                                    <?php
+                                }
+                                ?>
+                            </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+                <input type="submit" name="send_form" value="Envoyer">
             </form>
         </section>
         <!--<section id="competence" style="display: flex; flex-direction: row; justify-content: center">
@@ -402,7 +483,6 @@ $answer = new Answers;
 </body>
 <script>
     document.getElementById("skill_bloc").addEventListener("click", function(){
-        console.log("a");
         if (document.getElementById("skills").classList.length === 1){
             document.getElementById("skills").classList.add("dnone")
         }
