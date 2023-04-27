@@ -110,4 +110,16 @@ class Answers extends DatabaseConnexion
         return $answers->fetchAll();
     }
 
+    public function getAnswerForCategoryName($category_name){
+        $query = $this->db->prepare("SELECT a.* FROM answer a 
+                                            INNER JOIN questions q 
+                                            ON q.id = a.id_question
+                                            INNER JOIN category c
+                                            ON c.id = q.id_category
+                                            WHERE c.category_name LIKE ?");
+        $query->bindValue(1, "%$category_name%");
+        $query->execute();
+        return $query->fetchAll();
+    }
+
 }

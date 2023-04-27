@@ -112,6 +112,31 @@ class Questions extends Databaseconnexion
         return $questions->fetchAll();
     }
 
+    public function getQuestionFromCategoryWithIdAxis($id_axis){
+        $questions = $this->db->prepare("SELECT distinct q.*
+                                                FROM questions q
+                                                INNER JOIN category c
+                                                ON c.id = q.id_category
+                                                INNER JOIN axis a 
+                                                ON a.id = c.id_axis
+                                                WHERE c.id_axis = ? AND q.id_category = ?");
+        $questions->bindValue(1, $id_axis);
+        $questions->bindValue(2, $this->id_category);
+        $questions->execute();
+        return $questions->fetchAll();
+    }
+
+    public function getQuestionsFromCategory($category_name){
+        $questions = $this->db->prepare("SELECT q.* 
+                                                FROM questions q 
+                                                INNER JOIN category c 
+                                                ON c.id = q.id_category
+                                                WHERE c.category_name LIKE ?");
+        $questions->bindValue(1, "%$category_name%");
+        $questions->execute();
+        return $questions->fetchAll();
+    }
+
     public function getQuestionsForReactivite(){
         $questions = $this->db->prepare("SELECT distinct q.*
                                                 FROM questions q

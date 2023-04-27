@@ -93,5 +93,31 @@ class Grid extends DatabaseConnexion
         $this->id_user = $id_user;
     }
 
+    public function getAllGrid(){
+        $query = $this->db->prepare("SELECT * FROM grid");
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+    public function insert_form(Array $array_of_value): void
+    {
+        $query = $this->db->prepare("INSERT INTO grid(grid_number) VALUES(?)");
+        $query->bindValue(1, '000002');
+        $query->execute();
+
+        $grid_id = $this->db->lastInsertId();
+        foreach (array_keys($array_of_value) as $items) {
+            if ($items != "send_form"){
+                $query = $this->db->prepare("INSERT INTO grid_answer(id_grid, id_answer) VALUES (?,?)");
+                $query->bindValue(1, $grid_id);
+                $query->bindValue(2, $_POST[$items]);
+                $query->execute();
+            }
+        }
+        /*$query = $this->db->prepare('INSERT INTO grid(grid_number) VALUES(?)');
+        $query->bindValue(1, "000001");
+        $query->execute();*/
+
+    }
 
 }
