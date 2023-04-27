@@ -116,5 +116,13 @@ class Category extends DatabaseConnexion
         return $query->fetchAll();
     }
 
+    public function getCategoryByAxisId(){
+        $query = $this->db->prepare("SELECT * FROM category
+                                            WHERE id_axis = ?");
+        $query->bindValue(1, $this->getIdAxis());
+        $query->execute();
+        return $query->fetchAll();
+    }
+
 
 }

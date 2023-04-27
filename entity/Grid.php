@@ -99,15 +99,16 @@ class Grid extends DatabaseConnexion
         return $query->fetchAll();
     }
 
-    public function insert_form(Array $array_of_value): void
+    public function insert_form(Array $array_of_value, $grid_number, string $companie_name): void
     {
-        $query = $this->db->prepare("INSERT INTO grid(grid_number) VALUES(?)");
-        $query->bindValue(1, '000002');
+        $query = $this->db->prepare("INSERT INTO grid(companie_name, grid_number) VALUES(?,?)");
+        $query->bindValue(1, $companie_name);
+        $query->bindValue(2, $grid_number);
         $query->execute();
 
         $grid_id = $this->db->lastInsertId();
         foreach (array_keys($array_of_value) as $items) {
-            if ($items != "send_form"){
+            if ($items != "send_form" && $items != "companie_name"){
                 $query = $this->db->prepare("INSERT INTO grid_answer(id_grid, id_answer) VALUES (?,?)");
                 $query->bindValue(1, $grid_id);
                 $query->bindValue(2, $_POST[$items]);
@@ -118,6 +119,21 @@ class Grid extends DatabaseConnexion
         $query->bindValue(1, "000001");
         $query->execute();*/
 
+    }
+
+    public function searchLastGridNumber(){
+        $query = $this->db->prepare("SELECT grid_number FROM grid ORDER BY grid_number DESC LIMIT 1");
+        $query->execute();
+        $query = $query->fetch();
+        return $query['grid_number'];
+    }
+
+    public function getGridById(){
+        $query = $this->db->prepare("SELECT companie_name FROM grid WHERE ID = ?");
+        $query->bindValue(1, $this->getId());
+        $query->execute();
+        $query = $query->fetch();
+        return $query['companie_name'];
     }
 
 }

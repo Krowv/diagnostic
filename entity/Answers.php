@@ -122,4 +122,30 @@ class Answers extends DatabaseConnexion
         return $query->fetchAll();
     }
 
+    public function selectAnswerFromQuestionForGrid(){
+        $query = $this->db->prepare("SELECT a.* 
+                                            FROM answer a
+                                            INNER JOIN grid_answer ga
+                                            ON ga.id_answer = a.id
+                                            WHERE a.id_question = ?");
+        $query->bindValue(1, $this->getIdQuestion());
+        $query->execute();
+        return $query->fetch();
+    }
+
+    public function getAnswerScoreForOneAxis($id_axis){
+        $query = $this->db->prepare("SELECT SUM(a.note) as total_score
+                                            FROM answer a 
+                                            INNER JOIN grid_answer ga
+                                            ON ga.id_answer = a.id
+                                            INNER JOIN questions q
+                                            ON q.id = a.id_question
+                                            INNER JOIN category c
+                                            ON c.id = q.id_category
+                                            WHERE ga.id_grid = ? AND c.id_axis = ?");
+        $query->bindValue(1, $_GET['id']);
+        $query->bindValue(2, $id_axis);
+        $query->execute();
+        return $query->fetch();
+    }
 }
