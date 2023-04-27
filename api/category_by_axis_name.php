@@ -1,5 +1,5 @@
 <?php
-require("../entity/Database.php");
+require("../entity/DatabaseConnexion.php");
 require ("../entity/Category.php");
 $category = new Category;
 

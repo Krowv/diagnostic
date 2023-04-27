@@ -1,6 +1,6 @@
 <?php
 
-class Category extends Database
+class Category extends DatabaseConnexion
 {
     private int $id;
     private string $category_name;

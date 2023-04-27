@@ -1,7 +1,7 @@
 <?php
 $title = "Page d'accueil";
 include("component/header.php");
-include("entity/Database.php");
+include("entity/DatabaseConnexion.php");
 require ("entity/Grid.php");
 $grid = new Grid;
 

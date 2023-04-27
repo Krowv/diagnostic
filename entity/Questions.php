@@ -1,6 +1,6 @@
 <?php
 
-class Questions extends Database
+class Questions extends DatabaseConnexion
 {
     private int $id;
     private string $content;

@@ -1,5 +1,5 @@
 <?php
-require("../entity/Database.php");
+require("../entity/DatabaseConnexion.php");
 require("../entity/Grid.php");
 require("../entity/Axis.php");
 require("../entity/Category.php");
