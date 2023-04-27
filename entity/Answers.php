@@ -1,6 +1,6 @@
 <?php
 
-class Answers extends DatabaseConnexion
+class Answers extends Database
 {
 
     private int $id;

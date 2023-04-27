@@ -1,6 +1,6 @@
 <?php
 
-class Grid extends DatabaseConnexion
+class Grid extends Database
 {
     private int $id;
     private int $id_user;

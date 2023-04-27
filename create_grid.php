@@ -1,7 +1,7 @@
 <?php
 $title = "Page d'accueil";
 include("component/header.php");
-include ("entity/DatabaseConnexion.php");
+include("entity/Database.php");
 include ("entity/Questions.php");
 include ("entity/Answers.php");
 include ("entity/Category.php");

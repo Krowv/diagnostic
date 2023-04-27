@@ -1,6 +1,6 @@
 <?php
 
-class Axis extends DatabaseConnexion
+class Axis extends Database
 {
     private int $id;
     private string $axis_name;

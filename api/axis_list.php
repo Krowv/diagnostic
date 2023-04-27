@@ -1,5 +1,5 @@
 <?php
-require ("../entity/DatabaseConnexion.php");
+require("../entity/Database.php");
 require ("../entity/Axis.php");
 $axis = new Axis;
 
